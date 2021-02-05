@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sockets</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="/favicon.ico">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script> 
+    <script>
+        var socket = io();
+        socket.on("addimage",function(msg,base64image){
+            $("chat-window").append(
+                $("<p>").append($("<b>").text(msg),'<a target="_blank" href="'+ base64image + '"><img src"' +base64image+'" /></a>'
+                    )
+            )
+        });
+
+        $(function(){
+            $("imagefile").on("change",function(e){
+                var file = e.originalEvent.target.files[0];
+                var reader = new FileReader();
+
+                reader.onload = function(evt){
+                    socket.emit("user image",evt.target.result);
+                }
+                reader.readAsDataURL(file)
+            })
+        });
+
+    </script>
+</head>
+<body>
+    <div id="chat-container">
+        <div id="chat-window">
+            <div id="output"></div>
+            <div id="actions"></div>
+        </div>
+        <input type="text" id="username" placeholder="Nickname" >
+        <input type="text" id="message" placeholder="Escribe tu mensaje" >
+        <input type="file" id="image" placeholder="Seleccionar archivo">
+        <button id="send">Enviar</button>
+    </div>
+    
+</body>
+</html>
