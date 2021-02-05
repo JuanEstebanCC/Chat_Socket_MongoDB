@@ -12,7 +12,7 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// app.use('/api', require('./routes/usuarios'));
+app.use('/api', require('./routes/usuarios'));
 
 const server = app.listen(app.get('port'), () => {
   console.log('Working in the port..', app.get('port'));
